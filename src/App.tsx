@@ -4,6 +4,7 @@ import "./App.css";
 interface Todo {
   id: number;
   text: string;
+  completed: boolean;
 }
 
 function App() {
@@ -15,7 +16,6 @@ function App() {
     const trimmed = input.trim();
     if (!trimmed) return;
 
-    // simple duplicate check
     if (
       todos.some(
         (todo) =>
@@ -37,7 +37,7 @@ function App() {
       setEditId(null);
     } else {
       // add
-      setTodos([...todos, { id: Date.now(), text: trimmed }]);
+      setTodos([...todos, { id: Date.now(), text: trimmed, completed: false }]);
     }
 
     setInput("");
@@ -50,6 +50,14 @@ function App() {
   const handleEdit = (todo: Todo) => {
     setInput(todo.text);
     setEditId(todo.id);
+  };
+
+  const handleToggle = (id: number) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
   };
 
   return (
@@ -70,8 +78,15 @@ function App() {
 
       <ul>
         {todos.map((todo) => (
-          <li key={todo.id}>
-            <span>{todo.text}</span>
+          <li key={todo.id} className={todo.completed ? "completed" : ""}>
+            <div className="todo-left">
+              <input
+                type="checkbox"
+                checked={todo.completed}
+                onChange={() => handleToggle(todo.id)}
+              />
+              <span>{todo.text}</span>
+            </div>
             <div className="buttons">
               <button onClick={() => handleEdit(todo)}>Edit</button>
               <button onClick={() => handleDelete(todo.id)}>Delete</button>

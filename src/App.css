@@ -130,3 +130,16 @@ span {
     transform: translateY(0);
   }
 }
+
+/* Add this to style completed tasks */
+li.completed span {
+  text-decoration: line-through;
+  color: #888;
+}
+
+/* Adjust li to align checkbox and text */
+.todo-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
